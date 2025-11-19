@@ -2,6 +2,7 @@ use std::io;
 use std::fs;
 use serde::{Serialize, Deserialize};
 use std::process::Command;
+use colored::*;
 
 
 #[derive(Debug,Serialize, Deserialize)]
@@ -19,12 +20,12 @@ fn main(){
         clear_screen();
         list_todos(&mut todos);
 
-        println!("\n\n1) Adicionar");
+        println!("{}","\n\n1) Adicionar".cyan());
         // println!("2) Listar");
-        println!("2) Marcar como concluída");
-        println!("3) Remover");
-        println!("4) Sair");
-        println!("Escolha: ");
+        println!("{}","2) Marcar como concluída".cyan());
+        println!("{}","3) Remover".cyan());
+        println!("{}","4) Sair".cyan());
+        println!("{}","Escolha: ".cyan());
 
         let mut input = String::new();
 
@@ -63,16 +64,16 @@ fn add_todo(todos: &mut Vec<Todo>){
 
 
 fn list_todos(todos: &Vec<Todo>){
-    println!("\n=== Tarefas ===");
+    println!("{}", "\n=== Tarefas ===".magenta());
     if todos.is_empty(){
         println!("Lista de tarefas vazia");
         return;
     }
 
     for(i, todo) in todos.iter().enumerate(){
-        let status = if todo.done { "[x]"} else {"[ ]"};
-
-        println!("{}: {} {}", i , status, todo.text);
+        let status = if todo.done { "[x]".green()} else {"[ ]".yellow()};
+        
+        println!("{}: {} {}", i , status, todo.text.cyan());
     }
 }
 
@@ -85,7 +86,7 @@ fn mark_done(todos: &mut Vec<Todo>){
     if let Ok(i) = idx.trim().parse::<usize>(){
         if let Some(todo) = todos.get_mut(i){
             todo.done = true;
-            println!("Tarefa {}: concluida", todo.text);
+            println!("Tarefa {}: concluida", todo.text.truecolor(12, 254, 47));
 
         }
     }else{
